@@ -1,18 +1,22 @@
-import express from "express";
-import { Client } from "pg";
+import express from 'express';
+import { Client } from 'pg';
 
 const PORT = process.env.PORT || 3000;
 
 const client = new Client({
-  password: "postgres",
-  user: "postgres",
-  host: "postgres",
+  user: 'admin',
+  password: 'test123',
+  host: 'srv-captain--tutorial-postgres-db',
+  database: 'my-db',
 });
 
 const app = express();
 
-app.get("/ping", async (req, res) => {
-  const database = await client.query("SELECT 1 + 1").then(() => "up").catch(() => "down");
+app.get('/ping', async (req, res) => {
+  const database = await client
+    .query('SELECT 1 + 1')
+    .then(() => 'up')
+    .catch(() => 'down');
 
   res.send({
     environment: process.env.NODE_ENV,
@@ -24,6 +28,6 @@ app.get("/ping", async (req, res) => {
   await client.connect();
 
   app.listen(PORT, () => {
-    console.log("Started at http://localhost:%d", PORT);
+    console.log('Started at http://localhost:%d', PORT);
   });
 })();
